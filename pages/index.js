@@ -1,5 +1,5 @@
-import { useState } from "react";
-import copy from "copy-to-clipboard";
+import React, { useState } from 'react';
+import copy from 'copy-to-clipboard';
 
 const Index = () => {
   const [videoURL, setVideoURL] = useState("");
@@ -10,7 +10,7 @@ const Index = () => {
     let match = url.match(regExp);
 
     if (match && match[1].length === 11) {
-      const videoURL = match[1];
+      const videoId = match[1];
       const thumbnailBaseUrl = "http://img.youtube.com/vi/";
 
       const options = [
@@ -21,21 +21,28 @@ const Index = () => {
         { resolution: "Low (120x90)", code: "default" },
       ];
 
-      const thumbnailOptions = options.map((option) => ({
+      const thumbnails = options.map((option) => ({
         resolution: option.resolution,
-        url: `${thumbnailBaseUrl}${videoURL}/${option.code}.jpg`,
+        url: `${thumbnailBaseUrl}${videoId}/${option.code}.jpg`,
       }));
 
-      setThumbnailOptions(thumbnailOptions);
+      setThumbnailOptions(thumbnails);
       setVideoURL("");
     } else {
       setThumbnailOptions([]);
     }
   };
 
+  const copyImageURL = (url) => {
+    copy(url);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="text-center mb-8">
+        <div className="text-left">
+          <img src="/favicon/favicon.ico" alt="Logo" className="mb-4" />
+        </div>
         <h1 className="text-3xl font-bold mb-2">
           Youtube Thumbnail Downloader
         </h1>
@@ -43,6 +50,7 @@ const Index = () => {
           Download high-quality thumbnails from YouTube videos.
         </p>
       </header>
+
       <div className="text-center">
         <input
           type="text"
@@ -65,9 +73,10 @@ const Index = () => {
             {thumbnailOptions.map((option, index) => (
               <div key={index} className="thumbnail-option">
                 <img src={option.url} alt={`Thumbnail ${index + 1}`} />
+                <div></div>
                 <button
                   className="btn-blue mt-2"
-                  onClick={() => copy(option.url)}
+                  onClick={() => copyImageURL(option.url)}
                 >
                   Copy Image URL
                 </button>
@@ -76,6 +85,25 @@ const Index = () => {
           </div>
         </div>
       )}
+      <div className="mt-8 text-center" style={{maxWidth: '1080px',marginTop: '30px',textAlign: 'justify'}}>
+        <h2 className="text-xl font-semibold mb-4">Description</h2>
+        <p>
+          Vous cherchez un moyen simple et efficace de télécharger les miniatures
+          de vidéos YouTube en haute résolution ?<br />
+          Ne cherchez pas plus loin ! Avec notre YouTube Thumbnail Downloader, vous pouvez obtenir en quelques
+          étapes simples des miniatures de qualité pour toutes vos vidéos
+          préférées.
+        </p>
+        
+        <h2 className="text-xl font-semibold mb-4">Comment ça marche</h2>
+          <p>Étape 1 : Copiez l'URL de la vidéo YouTube que vous souhaitez extraire la miniature.</p>
+          <p>Étape 2 : Collez l'URL dans la barre de recherche de notre outil Thumbnail Downloader.</p>
+          <p>Étape 3 : Cliquez sur le bouton "Télécharger les Miniatures".</p>
+          <p>Étape 4 : Explorez les options de miniatures disponibles, y compris la résolution HD (1280x720), SD (640x480), Normal (480x360), Medium (320x180) et Low (120x90).</p>
+          <p>Étape 5 : Cliquez sur "Copier l'URL de l'Image" pour enregistrer la miniature souhaitée.</p>
+          <p><strong>Grâce à notre outil convivial, vous pouvez accéder à des miniatures de qualité supérieure pour un usage personnel ou professionnel. Que vous souhaitiez personnaliser vos vidéos, créer des vignettes accrocheuses pour votre chaîne YouTube, ou simplement collectionner vos moments préférés, notre YouTube Thumbnail Downloader est là pour vous simplifier la vie.</strong></p>
+          <p>Essayez-le dès aujourd'hui et découvrez la commodité de notre outil Thumbnail Downloader. Téléchargez vos miniatures YouTube en un clin d'œil et faites briller votre contenu !</p>
+      </div>
     </div>
   );
 };
